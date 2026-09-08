@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | SHEMA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}" />
+  </head>
+  <body class="admin-body">
+    <div class="admin-layout">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="brand-mark">S</div>
+          <span>SHEMA</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a class="nav-item active" href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+          <a class="nav-item" href="{{ url_for('admin.projects') }}">Portfolio Projects</a>
+          <a class="nav-item" href="{{ url_for('admin.upload_page') }}">Upload Project</a>
+          <a class="nav-item" href="{{ url_for('admin.settings_page') }}">Settings</a>
+          <a class="nav-item danger" href="{{ url_for('auth.logout') }}">Logout</a>
+        </nav>
+      </aside>
+
+      <main class="content-panel">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Overview</p>
+            <h1>Dashboard</h1>
+          </div>
+          <div class="topbar-actions">
+            <a class="btn btn-secondary" href="{{ url_for('admin.upload_page') }}">New Project</a>
+          </div>
+        </header>
+
+        <section class="stats-grid">
+          <div class="stat-card">
+            <span>Total Portfolio Projects</span>
+            <strong>{{ stats.total }}</strong>
+          </div>
+          <div class="stat-card">
+            <span>Total Photography Projects</span>
+            <strong>{{ stats.photography }}</strong>
+          </div>
+          <div class="stat-card">
+            <span>Total Video Projects</span>
+            <strong>{{ stats.videos }}</strong>
+          </div>
+          <div class="stat-card">
+            <span>Total Graphic Design Projects</span>
+            <strong>{{ stats.graphics }}</strong>
+          </div>
+          <div class="stat-card">
+            <span>Total Animation Projects</span>
+            <strong>{{ stats.animations }}</strong>
+          </div>
+          <div class="stat-card">
+            <span>Published</span>
+            <strong>{{ stats.published }}</strong>
+          </div>
+        </section>
+
+        <section class="dashboard-panels">
+          <div class="panel">
+            <h2>Recent Uploads</h2>
+            <ul class="recent-list">
+              {% for project in recent %}
+              <li>
+                <div>
+                  <strong>{{ project.title }}</strong>
+                  <small>{{ project.category }}</small>
+                </div>
+                <span class="status-tag {{ project.status.lower() }}">{{ project.status }}</span>
+              </li>
+              {% else %}
+              <li>No projects yet.</li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="panel">
+            <h2>Quick Analytics</h2>
+            <div class="analytic-list">
+              <div>
+                <span>Draft</span>
+                <strong>{{ stats.total - stats.published }}</strong>
+              </div>
+              <div>
+                <span>Hidden</span>
+                <strong>{{ stats.total - stats.published }}</strong>
+              </div>
+              <div>
+                <span>Categories</span>
+                <strong>7</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+  </body>
+</html>

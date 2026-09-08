@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login | SHEMA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}" />
+  </head>
+  <body class="auth-body">
+    <div class="auth-shell">
+      <div class="auth-card">
+        <div class="brand-block">
+          <div class="brand-mark">S</div>
+          <span>SHEMA</span>
+        </div>
+        <h1>Admin Login</h1>
+        <p class="subtitle">Sign in to manage your portfolio</p>
+
+        {% if error %}
+        <div class="alert error">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" action="{{ url_for('auth.login_page') }}">
+          <div class="field-group">
+            <label for="identifier">Email or Username</label>
+            <input id="identifier" name="identifier" type="text" placeholder="admin@example.com" required />
+          </div>
+
+          <div class="field-group password-wrap">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="Enter password" required />
+            <button type="button" class="toggle-password" aria-label="Show password">Show</button>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+  </body>
+</html>

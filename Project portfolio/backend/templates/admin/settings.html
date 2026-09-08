@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings | SHEMA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}" />
+  </head>
+  <body class="admin-body">
+    <div class="admin-layout">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="brand-mark">S</div>
+          <span>SHEMA</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a class="nav-item" href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+          <a class="nav-item" href="{{ url_for('admin.projects') }}">Portfolio Projects</a>
+          <a class="nav-item" href="{{ url_for('admin.upload_page') }}">Upload Project</a>
+          <a class="nav-item active" href="{{ url_for('admin.settings_page') }}">Settings</a>
+          <a class="nav-item danger" href="{{ url_for('auth.logout') }}">Logout</a>
+        </nav>
+      </aside>
+
+      <main class="content-panel">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Brand Settings</p>
+            <h1>Portfolio Settings</h1>
+          </div>
+        </header>
+
+        <form id="settingsForm" class="project-form">
+          <div class="form-grid">
+            <div class="panel form-panel">
+              <h2>Profile</h2>
+              <div class="field-group"><label>Portfolio Owner Name</label><input type="text" name="portfolio_owner" value="{{ settings.portfolio_owner }}" /></div>
+              <div class="field-group"><label>Professional Title</label><input type="text" name="professional_title" value="{{ settings.professional_title }}" /></div>
+              <div class="field-group"><label>Email</label><input type="email" name="email" value="{{ settings.email }}" /></div>
+              <div class="field-group"><label>Phone Number</label><input type="text" name="phone" value="{{ settings.phone }}" /></div>
+              <div class="field-group"><label>Location</label><input type="text" name="location" value="{{ settings.location }}" /></div>
+            </div>
+            <div class="panel form-panel">
+              <h2>Social Links</h2>
+              <div class="field-group"><label>Instagram</label><input type="url" name="instagram" value="{{ settings.instagram }}" /></div>
+              <div class="field-group"><label>YouTube</label><input type="url" name="youtube" value="{{ settings.youtube }}" /></div>
+              <div class="field-group"><label>LinkedIn</label><input type="url" name="linkedin" value="{{ settings.linkedin }}" /></div>
+              <div class="field-group"><label>Website</label><input type="url" name="website" value="{{ settings.website }}" /></div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Save Settings</button>
+          </div>
+        </form>
+      </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+  </body>
+</html>

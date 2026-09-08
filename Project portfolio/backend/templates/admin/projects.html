@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects | SHEMA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}" />
+  </head>
+  <body class="admin-body">
+    <div class="admin-layout">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="brand-mark">S</div>
+          <span>SHEMA</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a class="nav-item" href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+          <a class="nav-item active" href="{{ url_for('admin.projects') }}">Portfolio Projects</a>
+          <a class="nav-item" href="{{ url_for('admin.upload_page') }}">Upload Project</a>
+          <a class="nav-item" href="{{ url_for('admin.settings_page') }}">Settings</a>
+          <a class="nav-item danger" href="{{ url_for('auth.logout') }}">Logout</a>
+        </nav>
+      </aside>
+
+      <main class="content-panel">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Content Library</p>
+            <h1>Projects</h1>
+          </div>
+          <a class="btn btn-primary" href="{{ url_for('admin.upload_page') }}">Upload Project</a>
+        </header>
+
+        <section class="filters-box">
+          <form class="filters-form" method="get">
+            <input type="text" name="search" value="{{ filters.search }}" placeholder="Search by title, client, category..." />
+            <select name="category">
+              <option value="">All categories</option>
+              {% for category in categories %}
+              <option value="{{ category.name }}" {% if filters.category == category.name %}selected{% endif %}>{{ category.name }}</option>
+              {% endfor %}
+            </select>
+            <select name="status">
+              <option value="">All statuses</option>
+              <option value="Published" {% if filters.status == 'Published' %}selected{% endif %}>Published</option>
+              <option value="Draft" {% if filters.status == 'Draft' %}selected{% endif %}>Draft</option>
+              <option value="Hidden" {% if filters.status == 'Hidden' %}selected{% endif %}>Hidden</option>
+            </select>
+            <select name="sort">
+              <option value="newest" {% if filters.sort == 'newest' %}selected{% endif %}>Newest</option>
+              <option value="oldest" {% if filters.sort == 'oldest' %}selected{% endif %}>Oldest</option>
+              <option value="updated" {% if filters.sort == 'updated' %}selected{% endif %}>Recently Updated</option>
+              <option value="name" {% if filters.sort == 'name' %}selected{% endif %}>Project Name</option>
+            </select>
+            <button class="btn btn-secondary" type="submit">Apply</button>
+          </form>
+        </section>
+
+        <section class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Cover</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Updated</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for project in projects %}
+              <tr>
+                <td>
+                  {% if project.cover_image %}
+                  <img class="table-cover" src="/{{ project.cover_image.replace('\\', '/') }}" alt="{{ project.title }}" />
+                  {% else %}
+                  <div class="cover-placeholder">No image</div>
+                  {% endif %}
+                </td>
+                <td>{{ project.title }}</td>
+                <td>{{ project.category }}</td>
+                <td>{{ project.project_date or '—' }}</td>
+                <td><span class="status-tag {{ project.status.lower() }}">{{ project.status }}</span></td>
+                <td>{{ project.updated_at[:10] }}</td>
+                <td class="actions-cell">
+                  <a href="{{ url_for('admin.edit_project_page', project_id=project.id) }}" class="small-link">Edit</a>
+                  <button type="button" class="small-link danger" data-delete-project="{{ project.id }}">Delete</button>
+                  <form method="post" action="/admin/api/projects/{{ project.id }}/toggle" class="inline-form">
+                    <input type="hidden" name="status" value="{{ 'Published' if project.status != 'Published' else 'Hidden' }}" />
+                    <button type="submit" class="small-link">{{ 'Publish' if project.status != 'Published' else 'Hide' }}</button>
+                  </form>
+                </td>
+              </tr>
+              {% else %}
+              <tr><td colspan="7">No projects available.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+  </body>
+</html>
